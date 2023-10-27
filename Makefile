@@ -1,0 +1,44 @@
+
+NAME = tracer
+
+SDL2_LIB = $(shell sdl2-config --cflags --libs)
+
+CXXFLAGS = -Werror  -Wfatal-errors
+CXXFLAGS += -pedantic
+CXXFLAGS += -g
+
+LDFLAGS = $(SDL2_LIB)
+
+SRCS = 	src/main2.cpp \
+		src/color.cpp \
+		src/App.cpp 
+
+OBJS = $(SRCS:.cpp=.o)
+
+
+%.o : %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+
+$(NAME): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+
+
+all: $(NAME)
+
+clean :
+	-rm $(OBJS)
+
+fclean : clean
+	-rm $(NAME)
+
+
+run : $(NAME)
+	./$(NAME) 
+
+image : clean $(NAME)
+	./$(NAME) > image.ppm 
+	
+# ; convert image.ppm picture.png 
+
+.PHONY: all clean fclean re run leak json
