@@ -1,8 +1,8 @@
 #include "App.hpp"
-#include "vector3.hpp"
-#include "color.hpp"
+#include "Vector3.hpp"
+#include "Color.hpp"
 
-App* App::instance = 0; 
+App App::instance; 
 
 /**
  * @brief get the singleton app instance
@@ -11,11 +11,7 @@ App* App::instance = 0;
  */
 App *App::getInstance()
 {
-    if (!instance) {
-        instance = new App;
-    }
-
-    return instance;
+    return &instance;
 }
 
 App::App()
@@ -54,7 +50,7 @@ void App::render()
 
     for (int j = 0; j < image_height; ++j) {
         for (int i = 0; i < image_width; ++i) {
-            color pixel_color = color(double(i)/(image_width-1), double(j)/(image_height-1), double(j)/(image_height-1));
+            Color pixel_color = Color(double(i)/(image_width-1), double(j)/(image_height-1), double(j)/(image_height-1));
             write_surface_color(surface, pixel_color, i, j);
         }
     }

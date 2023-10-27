@@ -9,8 +9,8 @@ CXXFLAGS += -g
 
 LDFLAGS = $(SDL2_LIB)
 
-SRCS = 	src/main2.cpp \
-		src/color.cpp \
+SRCS = 	src/main.cpp \
+		src/Color.cpp \
 		src/App.cpp 
 
 OBJS = $(SRCS:.cpp=.o)

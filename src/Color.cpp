@@ -1,15 +1,15 @@
-#include "color.hpp"
+#include "Color.hpp"
 #include <iostream>
 
 
-void write_color(std::ostream &out, color pixel_color) {
+void write_color(std::ostream &out, Color pixel_color) {
     // Write the translated [0,255] value of each color component.
     out << static_cast<int>(255.999 * pixel_color.x()) << ' '
         << static_cast<int>(255.999 * pixel_color.y()) << ' '
         << static_cast<int>(255.999 * pixel_color.z()) << '\n';
 }
 
-void write_surface_color(SDL_Surface *surface, color pixel_color, int x, int y) 
+void write_surface_color(SDL_Surface *surface, Color pixel_color, int x, int y) 
 {
 
     Uint32 * const target_pixel = (Uint32 *) ((Uint8 *) surface->pixels

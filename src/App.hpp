@@ -1,5 +1,5 @@
-#ifndef APP_H
-#define APP_H
+#ifndef APP_HPP
+#define APP_HPP
 
 #include <SDL2/SDL.h>
 #pragma once
@@ -7,7 +7,7 @@
 class App
 {
 private:
-    static App *instance;
+    static App instance;
 
 
 private:
