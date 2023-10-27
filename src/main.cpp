@@ -25,35 +25,6 @@ void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
   *target_pixel = pixel;
 }
 
-void next(SDL_Renderer* renderer)
-{
-    SDL_Surface* surface = SDL_CreateRGBSurface(0,image_width,image_height,32,0,0,0,0);
-
-    for (int j = 0; j < image_height; ++j) {
-        for (int i = 0; i < image_width; ++i) {
-            Color pixel_color = Color(double(i)/(image_width-1), double(j)/(image_height-1), double(j)/(image_height-1));
-            write_surface_color(surface, pixel_color, i, j);
-        }
-    }
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    std::cout << "next" << std::endl;
-
-    SDL_FreeSurface(surface);
-
-    SDL_Rect rect;
-    rect.x = 0;
-    rect.y = 0;
-    SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
-
-    std::cout << rect.w << "x" << rect.h << std::endl;
-
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
-
-    SDL_DestroyTexture(texture);
-
-}
-
-
 int main() 
 {
 

@@ -1,15 +1,15 @@
-#include "Color.hpp"
 #include <iostream>
+#include "Color.hpp"
 
 
-void write_color(std::ostream &out, Color pixel_color) {
+void Color::write_color(std::ostream &out) {
     // Write the translated [0,255] value of each color component.
-    out << static_cast<int>(255.999 * pixel_color.x()) << ' '
-        << static_cast<int>(255.999 * pixel_color.y()) << ' '
-        << static_cast<int>(255.999 * pixel_color.z()) << '\n';
+    out << static_cast<int>(255.999 * r()) << ' '
+        << static_cast<int>(255.999 * g()) << ' '
+        << static_cast<int>(255.999 * b()) << '\n';
 }
 
-void write_surface_color(SDL_Surface *surface, Color pixel_color, int x, int y) 
+void Color::write_surface_color(SDL_Surface *surface, int x, int y) 
 {
 
     Uint32 * const target_pixel = (Uint32 *) ((Uint8 *) surface->pixels
@@ -19,12 +19,15 @@ void write_surface_color(SDL_Surface *surface, Color pixel_color, int x, int y)
     Uint32 c = 0;
 	c += static_cast<unsigned int>(1 * 255.0) & 0xFF;
 	c = c << 8;
-	c += static_cast<unsigned int>(255.999 * pixel_color.x()) & 0xFF;
+	c += static_cast<unsigned int>(255.999 * r()) & 0xFF;
 	c = c << 8;
-	c += static_cast<unsigned int>(255.999 * pixel_color.y()) & 0xFF;
+	c += static_cast<unsigned int>(255.999 * g()) & 0xFF;
 	c = c << 8;
-	c += static_cast<unsigned int>(255.999 * pixel_color.z()) & 0xFF;
+	c += static_cast<unsigned int>(255.999 * b()) & 0xFF;
 
     *target_pixel = c;
 }
 
+inline std::ostream& operator<<(std::ostream &out, const Color &c) {
+    return out << c.e[0] << ' ' << c.e[1] << ' ' << c.e[2];
+}

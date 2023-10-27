@@ -2,12 +2,25 @@
 #define COLOR_HPP
 
 #include <SDL2/SDL.h>
+#include <iostream>
 #include "Vector3.hpp"
 
-using Color = Vector3;
+class Color : public Vector3
+{
+public:
+    Color() : Vector3{0,0,0} {}
+    Color(double r, double g, double b) : Vector3{r, g, b} {}
+    ~Color() {}
 
-void write_color(std::ostream &out, Color pixel_color);
-void write_surface_color(SDL_Surface *surface, Color pixel_color, int x, int y);
+    double r() const { return e[0]; }
+    double g() const { return e[1]; }
+    double b() const { return e[2]; }
+
+    void write_color(std::ostream &out);
+    void write_surface_color(SDL_Surface *surface, int x, int y);
+
+};
+
 
 #endif
 

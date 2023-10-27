@@ -50,8 +50,8 @@ void App::render()
 
     for (int j = 0; j < image_height; ++j) {
         for (int i = 0; i < image_width; ++i) {
-            Color pixel_color = Color(double(i)/(image_width-1), double(j)/(image_height-1), double(j)/(image_height-1));
-            write_surface_color(surface, pixel_color, i, j);
+            Color pixel_color = Color(double(i)/(image_width-1), double(j)/(image_height-1), double(j / 2)/(image_height-1));
+            pixel_color.write_surface_color(surface, i, j);
         }
     }
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
