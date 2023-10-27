@@ -3,18 +3,16 @@
 
 #include "Vector3.hpp"
 
-class ray {
+class Ray {
   public:
-    ray() {}
+    Ray() {}
 
-    ray(const Point3& origin, const Vector3& direction) : orig(origin), dir(direction) {}
+    Ray(const Point3& origin, const Vector3& direction) : orig(origin), dir(direction) {}
 
     Point3 origin() const  { return orig; }
     Vector3 direction() const { return dir; }
 
-    Point3 at(double t) const {
-        return orig + t * dir;
-    }
+    Point3 at(double t) const;
 
   private:
     Point3 orig;

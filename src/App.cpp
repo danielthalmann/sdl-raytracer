@@ -1,6 +1,7 @@
 #include "App.hpp"
 #include "Vector3.hpp"
 #include "Color.hpp"
+#include <iostream>
 
 App App::instance; 
 
@@ -16,10 +17,12 @@ App *App::getInstance()
 
 App::App()
 {
-    aspect_ratio = 16 / 9;
-    image_width = 400;
+    aspect_ratio = 16.0 / 10.0;
+    image_width = 800;
     image_height = static_cast<int>(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
+
+    std::cout << aspect_ratio << ":" << image_width << "x" << image_height << std::endl; 
 
     viewport_height = 2.0;
     viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
@@ -46,8 +49,6 @@ void App::render()
 
     // TODO RENDER
 
-    SDL_Surface* surface = SDL_CreateRGBSurface(0,image_width,image_height,32,0,0,0,0);
-
     for (int j = 0; j < image_height; ++j) {
         for (int i = 0; i < image_width; ++i) {
             Color pixel_color = Color(double(i)/(image_width-1), double(j)/(image_height-1), double(j / 2)/(image_height-1));
@@ -55,8 +56,6 @@ void App::render()
         }
     }
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-    SDL_FreeSurface(surface);
 
     SDL_Rect rect;
     rect.x = 0;
@@ -77,6 +76,7 @@ void App::render()
  */
 void App::clean()
 {
+    SDL_FreeSurface(surface);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
@@ -109,9 +109,16 @@ void App::start()
         return;
     }
 
+    surface = SDL_CreateRGBSurface(0,image_width,image_height,32,0,0,0,0);
+
     primarySurface = SDL_GetWindowSurface(window);
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    if (renderer == NULL) {
+        SDL_Log("Unable to Init windows: %s", SDL_GetError());
+        return;
+    }
 
     SDL_Event event;
 

@@ -8,14 +8,6 @@
 
 // Image
 
-float aspect_ratio;
-int image_width;
-int image_height;
-float viewport_height;
-float viewport_width;
-
-
-int start = 0;
 
 void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {

@@ -11,6 +11,7 @@ LDFLAGS = $(SDL2_LIB)
 
 SRCS = 	src/main.cpp \
 		src/Color.cpp \
+		src/Ray.cpp \
 		src/App.cpp 
 
 OBJS = $(SRCS:.cpp=.o)
@@ -37,7 +38,7 @@ run : $(NAME)
 	./$(NAME) 
 
 image : clean $(NAME)
-	./$(NAME) > image.ppm 
+	./$(NAME) 
 	
 # ; convert image.ppm picture.png 
 
