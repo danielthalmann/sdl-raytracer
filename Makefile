@@ -12,6 +12,7 @@ LDFLAGS = $(SDL2_LIB)
 SRCS = 	src/main.cpp \
 		src/Color.cpp \
 		src/Ray.cpp \
+		src/Camera.cpp \
 		src/App.cpp 
 
 OBJS = $(SRCS:.cpp=.o)

@@ -2,6 +2,7 @@
 #define APP_HPP
 
 #include <SDL2/SDL.h>
+#include "Camera.hpp"
 #pragma once
 
 class App
@@ -31,6 +32,7 @@ public:
     void loop();
     void render();
     void clean();
+    int init();
     void start();
 
 private:
@@ -41,6 +43,7 @@ private:
     float viewport_height;
     float viewport_width;
     bool running = false;
+    Camera camera;
 
 };
 

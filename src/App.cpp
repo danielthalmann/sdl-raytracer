@@ -1,6 +1,7 @@
 #include "App.hpp"
 #include "Vector3.hpp"
 #include "Color.hpp"
+#include "Ray.hpp"
 #include <iostream>
 
 App App::instance; 
@@ -25,7 +26,7 @@ App::App()
     std::cout << aspect_ratio << ":" << image_width << "x" << image_height << std::endl; 
 
     viewport_height = 2.0;
-    viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
+    viewport_width = viewport_height * (static_cast<float>(image_width)/image_height);
 
 }
 
@@ -49,12 +50,39 @@ void App::render()
 
     // TODO RENDER
 
+
+    camera.focal_length = 1.0;
+    camera.viewport_height = 2.0;
+    camera.viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
+    camera.camera_center = Point3(0, 0, 0);
+
+    // Calculate the vectors across the horizontal and down the vertical viewport edges.
+    camera.viewport_u = Vector3(camera.viewport_width, 0, 0);
+    camera.viewport_v = Vector3(0, -camera.viewport_height, 0);
+
+    // Calculate the horizontal and vertical delta vectors from pixel to pixel.
+    camera.pixel_delta_u = camera.viewport_u / static_cast<float>(image_width);
+    camera.pixel_delta_v = camera.viewport_v / static_cast<float>(image_height);
+
+    // Calculate the location of the upper left pixel.
+    Vector3 viewport_upper_left = camera.camera_center
+                             - Vector3(0, 0, camera.focal_length) - camera.viewport_u / 2 - camera.viewport_v / 2;
+    Vector3 pixel00_loc = viewport_upper_left + 0.5 * (camera.pixel_delta_u + camera.pixel_delta_v);
+
+
     for (int j = 0; j < image_height; ++j) {
+
         for (int i = 0; i < image_width; ++i) {
-            Color pixel_color = Color(double(i)/(image_width-1), double(j)/(image_height-1), double(j / 2)/(image_height-1));
+            Vector3 pixel_center = pixel00_loc + (i * camera.pixel_delta_u) + (j * camera.pixel_delta_v);
+            Vector3 ray_direction = pixel_center - camera.camera_center;
+            Ray r(camera.camera_center, ray_direction);
+
+            Color pixel_color = Color::ray_color(r);
             pixel_color.write_surface_color(surface, i, j);
+
         }
     }
+
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     SDL_Rect rect;
@@ -83,21 +111,16 @@ void App::clean()
     SDL_Quit();
 }
 
-/**
- * @brief Start application
- * 
- */
-void App::start()
+int App::init() 
 {
-
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
-        return;
+        return 0;
     }
 
     if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
         SDL_Log("Unable to Init hinting: %s", SDL_GetError());
-        return;
+        return 0;
     }
 
     window = SDL_CreateWindow("TEST",
@@ -106,19 +129,33 @@ void App::start()
     
     if (window == NULL) {
         SDL_Log("Unable to Init windows: %s", SDL_GetError());
-        return;
+        return 0;
     }
-
-    surface = SDL_CreateRGBSurface(0,image_width,image_height,32,0,0,0,0);
-
-    primarySurface = SDL_GetWindowSurface(window);
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     if (renderer == NULL) {
         SDL_Log("Unable to Init windows: %s", SDL_GetError());
-        return;
+        return 0;
     }
+
+    primarySurface = SDL_GetWindowSurface(window);
+    surface = SDL_CreateRGBSurface(0, image_width, image_height, 32, 0, 0, 0, 0);
+
+    return 1;
+
+}
+
+
+/**
+ * @brief Start application
+ * 
+ */
+void App::start()
+{
+
+    if( ! init() )
+        return;
 
     SDL_Event event;
 
