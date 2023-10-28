@@ -3,6 +3,8 @@
 #include "Color.hpp"
 #include "Ray.hpp"
 #include <iostream>
+#include "shape/Sphere.hpp"
+#include "Hit.hpp"
 
 App App::instance; 
 
@@ -19,7 +21,7 @@ App *App::getInstance()
 App::App()
 {
     aspect_ratio = 16.0 / 10.0;
-    image_width = 800;
+    image_width = 1200;
     image_height = static_cast<int>(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
 
@@ -69,15 +71,26 @@ void App::render()
                              - Vector3(0, 0, camera.focal_length) - camera.viewport_u / 2 - camera.viewport_v / 2;
     Vector3 pixel00_loc = viewport_upper_left + 0.5 * (camera.pixel_delta_u + camera.pixel_delta_v);
 
+    Sphere sphere(Point3(0,0,-1), 0.5);
+
 
     for (int j = 0; j < image_height; ++j) {
 
         for (int i = 0; i < image_width; ++i) {
             Vector3 pixel_center = pixel00_loc + (i * camera.pixel_delta_u) + (j * camera.pixel_delta_v);
             Vector3 ray_direction = pixel_center - camera.camera_center;
-            Ray r(camera.camera_center, ray_direction.unit_vector());
+            Ray r(camera.camera_center, ray_direction);
 
-            Color pixel_color = Color::ray_color(r);
+            Color pixel_color;
+            Hit hit = sphere.hit(r);
+            if (hit.t > 0) {
+                Vector3 N = r.at(hit.t) - Vector3(0,0,-1);
+                N = N.unit_vector();
+                pixel_color = Color(N.x()+1, N.y()+1, N.z()+1) * 0.5;
+            }
+            else
+                pixel_color = Color::ray_color(r);
+
             pixel_color.write_surface_color(surface, i, j);
 
         }
