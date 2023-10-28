@@ -3,10 +3,11 @@
 
 #include "Vector3.hpp"
 
-class Ray {
+class Ray
+{
+
   public:
     Ray() {}
-
     Ray(const Point3& origin, const Vector3& direction) : orig(origin), dir(direction) {}
 
     Point3 origin() const  { return orig; }

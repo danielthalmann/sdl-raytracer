@@ -75,7 +75,7 @@ void App::render()
         for (int i = 0; i < image_width; ++i) {
             Vector3 pixel_center = pixel00_loc + (i * camera.pixel_delta_u) + (j * camera.pixel_delta_v);
             Vector3 ray_direction = pixel_center - camera.camera_center;
-            Ray r(camera.camera_center, ray_direction);
+            Ray r(camera.camera_center, ray_direction.unit_vector());
 
             Color pixel_color = Color::ray_color(r);
             pixel_color.write_surface_color(surface, i, j);

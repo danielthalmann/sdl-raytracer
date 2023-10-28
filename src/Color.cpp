@@ -2,7 +2,8 @@
 #include "Color.hpp"
 
 
-void Color::write_color(std::ostream &out) {
+void Color::write_color(std::ostream &out) 
+{
     // Write the translated [0,255] value of each color component.
     out << static_cast<int>(255.999 * r()) << ' '
         << static_cast<int>(255.999 * g()) << ' '
@@ -28,6 +29,10 @@ void Color::write_surface_color(SDL_Surface *surface, int x, int y)
     *target_pixel = c;
 }
 
-inline std::ostream& operator<<(std::ostream &out, const Color &c) {
-    return out << c.e[0] << ' ' << c.e[1] << ' ' << c.e[2];
+Color Color::ray_color(const Ray& r) {
+
+    float a = (0.5 * (r.direction().y() + 1.0));  
+    Color color = Color(1.0, 1.0, 1.0) * (1.0 - a);
+    return color + (Color(0.5, 0.8, 1.0) * a);
+    
 }
