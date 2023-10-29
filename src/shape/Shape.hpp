@@ -10,7 +10,7 @@ public:
     Shape(Point3 c) : center(c)  {}
     virtual ~Shape() {}
 
-    virtual Hit hit(Ray ray) = 0;
+    virtual bool hit(const Ray &r, double ray_tmin, double ray_tmax, Hit &hit) = 0;
 
 protected:
     Point3 center;

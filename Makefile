@@ -13,6 +13,7 @@ SRCS = 	src/main.cpp \
 		src/Color.cpp \
 		src/Ray.cpp \
 		src/Camera.cpp \
+		src/World.cpp \
 		src/shape/Shape.cpp \
 		src/shape/Sphere.cpp \
 		src/App.cpp 

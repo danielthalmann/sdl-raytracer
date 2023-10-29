@@ -10,7 +10,7 @@ public:
     Sphere(Point3 c, double r) : Shape(c), radius(r) {}
     virtual ~Sphere() {}
 
-    virtual Hit hit(Ray ray);
+    virtual bool hit(const Ray &r, double ray_tmin, double ray_tmax, Hit &hit);
 
 protected:
     double radius;

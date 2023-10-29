@@ -73,6 +73,8 @@ void App::render()
 
     Sphere sphere(Point3(0,0,-1), 0.5);
 
+    double ray_tmin = 0.1;
+    double ray_tmax = 1.5;
 
     for (int j = 0; j < image_height; ++j) {
 
@@ -82,8 +84,8 @@ void App::render()
             Ray r(camera.camera_center, ray_direction);
 
             Color pixel_color;
-            Hit hit = sphere.hit(r);
-            if (hit.t > 0) {
+            Hit hit;
+            if (sphere.hit(r, ray_tmin, ray_tmax, hit)) {
                 Vector3 N = r.at(hit.t) - Vector3(0,0,-1);
                 N = N.unit_vector();
                 pixel_color = Color(N.x()+1, N.y()+1, N.z()+1) * 0.5;

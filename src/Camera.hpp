@@ -5,35 +5,25 @@
 
 #pragma once
 /*
-
-                  U
-
-         ────────────────────►
-
-     │   ┌───────────────────┐
-     │   │                   │
-     │   │  . . . . . . . .  │
-     │   │                   │
-  V  │   │  . . ▲ . . . ◄─► ◄├──── Pixel_delta_U
-     │   │      │            │
-     │   │  . . ▼ . . . . .  │
-     │   │                   │
-     ▼   └──────▲────────────┘
-                │
-                │
-                │
-                │
-
-              Pixel_delta_V
+             U
+      ──────────────────►
+    │ ┌─────────────────┐
+    │ │  . . . . . . .  │
+ V  │ │  . . ▲ . . ◄─► ◄├── Pixel_delta_U
+    │ │  . . ▼ . . . .  │
+    ▼ └──────▲──────────┘
+             │
+        Pixel_delta_V
 */
 
 class Camera
 {
 
-
 public:
     Camera();
     ~Camera();
+
+    void renderWorld();
 
 public:
     // Calculate the vectors across the horizontal and down the vertical viewport edges.
