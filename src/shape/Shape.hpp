@@ -12,6 +12,8 @@ public:
 
     virtual bool hit(const Ray &r, double ray_tmin, double ray_tmax, Hit &hit) = 0;
 
+    virtual void translate(Vector3 t);
+
 protected:
     Point3 center;
 

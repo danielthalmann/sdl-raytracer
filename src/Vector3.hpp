@@ -59,6 +59,19 @@ class Vector3 {
     Vector3 unit_vector() {
         return (*this) / this->length();
     }
+
+    static Vector3 up() {
+        return Vector3({0, 1.0, 0});
+    }
+    static Vector3 down() {
+        return Vector3({0, -1.0, 0});
+    }
+    static Vector3 left() {
+        return Vector3({-1.0, 0, 0});
+    }
+    static Vector3 right() {
+        return Vector3({1.0, 0, 0});
+    }
 };
 
 // Point3 is just an alias for Vector3, but useful for geometric clarity in the code.

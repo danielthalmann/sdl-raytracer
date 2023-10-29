@@ -17,6 +17,7 @@ private:
     SDL_Surface *primarySurface;
     SDL_Surface *surface;
     SDL_Renderer *renderer;
+    Shape *current_shape = 0;
     
     World world;
     Camera camera;

@@ -26,8 +26,9 @@ App::App()
 
     camera.size(image_width, image_height);
 
-    world.addShape(new Sphere(Point3(0,0,-1), 0.5));
-
+    current_shape = new Sphere(Point3(0,0,-1), 0.5);
+    world.addShape(current_shape);
+    world.addShape(new Sphere(Point3(0,-100.5,-1), 100));
 }
 
 App::~App()
@@ -133,6 +134,23 @@ void App::start()
 		while(SDL_PollEvent(&event) != 0) {
 			
             if(event.type == SDL_QUIT) running = false;
+
+            if(event.type == SDL_KEYDOWN) {
+
+                if (event.key.keysym.sym == SDLK_UP) {
+                // Up Arrow
+                    current_shape->translate(Vector3::up() * 0.1);
+                } else if (event.key.keysym.sym == SDLK_DOWN) {
+                // Down Arrow
+                    current_shape->translate(Vector3::down() * 0.1);
+                } else if (event.key.keysym.sym == SDLK_LEFT) {
+                // Left Arrow
+                       current_shape->translate(Vector3::left() * 0.1);
+                } else if (event.key.keysym.sym == SDLK_RIGHT) {
+                // Right Arrow
+                    current_shape->translate(Vector3::right() * 0.1);
+                }
+            }
 
         }
 
