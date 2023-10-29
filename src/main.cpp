@@ -3,22 +3,18 @@
 #include "Vector3.hpp"
 #include "Color.hpp"
 #include "App.hpp"
+#include "Vector.hpp"
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-// Image
-
-
-void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
-{
-  Uint32 * const target_pixel = (Uint32 *) ((Uint8 *) surface->pixels
-                                             + y * surface->pitch
-                                             + x * surface->format->BytesPerPixel);
-  *target_pixel = pixel;
-}
-
 int main() 
 {
+
+    Vector<3, double> v;
+
+    std::cout << v.x() << std::endl;
+    std::cout << v.w() << std::endl;
+
 
     App::getInstance()->start();
 

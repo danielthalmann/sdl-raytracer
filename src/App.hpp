@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "Camera.hpp"
+#include "World.hpp"
 #pragma once
 
 class App
@@ -16,6 +17,9 @@ private:
     SDL_Surface *primarySurface;
     SDL_Surface *surface;
     SDL_Renderer *renderer;
+    
+    World world;
+    Camera camera;
 
 public:
     ~App();
@@ -37,13 +41,10 @@ public:
 
 private:
 
-    float aspect_ratio;
     int image_width;
     int image_height;
-    float viewport_height;
-    float viewport_width;
     bool running = false;
-    Camera camera;
+    
 
 };
 

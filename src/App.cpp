@@ -20,15 +20,13 @@ App *App::getInstance()
 
 App::App()
 {
-    aspect_ratio = 16.0 / 10.0;
+    double aspect_ratio = 16.0 / 10.0;
     image_width = 1200;
     image_height = static_cast<int>(image_width / aspect_ratio);
-    image_height = (image_height < 1) ? 1 : image_height;
 
-    std::cout << aspect_ratio << ":" << image_width << "x" << image_height << std::endl; 
+    camera.size(image_width, image_height);
 
-    viewport_height = 2.0;
-    viewport_width = viewport_height * (static_cast<float>(image_width)/image_height);
+    world.addShape(new Sphere(Point3(0,0,-1), 0.5));
 
 }
 
@@ -50,53 +48,7 @@ void App::render()
 {
     SDL_RenderClear(renderer);
 
-    // TODO RENDER
-
-
-    camera.focal_length = 1.0;
-    camera.viewport_height = 2.0;
-    camera.viewport_width = viewport_height * (static_cast<double>(image_width)/image_height);
-    camera.camera_center = Point3(0, 0, 0);
-
-    // Calculate the vectors across the horizontal and down the vertical viewport edges.
-    camera.viewport_u = Vector3(camera.viewport_width, 0, 0);
-    camera.viewport_v = Vector3(0, -camera.viewport_height, 0);
-
-    // Calculate the horizontal and vertical delta vectors from pixel to pixel.
-    camera.pixel_delta_u = camera.viewport_u / static_cast<float>(image_width);
-    camera.pixel_delta_v = camera.viewport_v / static_cast<float>(image_height);
-
-    // Calculate the location of the upper left pixel.
-    Vector3 viewport_upper_left = camera.camera_center
-                             - Vector3(0, 0, camera.focal_length) - camera.viewport_u / 2 - camera.viewport_v / 2;
-    Vector3 pixel00_loc = viewport_upper_left + 0.5 * (camera.pixel_delta_u + camera.pixel_delta_v);
-
-    Sphere sphere(Point3(0,0,-1), 0.5);
-
-    double ray_tmin = 0.1;
-    double ray_tmax = 1.5;
-
-    for (int j = 0; j < image_height; ++j) {
-
-        for (int i = 0; i < image_width; ++i) {
-            Vector3 pixel_center = pixel00_loc + (i * camera.pixel_delta_u) + (j * camera.pixel_delta_v);
-            Vector3 ray_direction = pixel_center - camera.camera_center;
-            Ray r(camera.camera_center, ray_direction);
-
-            Color pixel_color;
-            Hit hit;
-            if (sphere.hit(r, ray_tmin, ray_tmax, hit)) {
-                Vector3 N = r.at(hit.t) - Vector3(0,0,-1);
-                N = N.unit_vector();
-                pixel_color = Color(N.x()+1, N.y()+1, N.z()+1) * 0.5;
-            }
-            else
-                pixel_color = Color::ray_color(r);
-
-            pixel_color.write_surface_color(surface, i, j);
-
-        }
-    }
+    camera.renderWorld(world, surface);
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
